@@ -1,13 +1,17 @@
 #include <pthread.h>
 #include <stdio.h>
 
+pthread_mutex_t mtx;
+
 int i = 0;
 
 // Note the return type: void*
 void* incrementingThreadFunction(){
     for (int j = 0; j < 1000000; j++) {
 	// TODO: sync access to i
+    pthread_mutex_lock(&mtx);
 	i++;
+    pthread_mutex_unlock(&mtx);
     }
     return NULL;
 }
@@ -15,7 +19,9 @@ void* incrementingThreadFunction(){
 void* decrementingThreadFunction(){
     for (int j = 0; j < 1000000; j++) {
 	// TODO: sync access to i
+    pthread_mutex_lock(&mtx);
 	i--;
+    pthread_mutex_unlock(&mtx);
     }
     return NULL;
 }
